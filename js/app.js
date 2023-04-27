@@ -40,6 +40,13 @@ function iniciarApp() {
   function mostrarRecetas(recetas) {
     limpiarHTML(resultado);
 
+    const header = document.createElement("H2");
+    header.classList.add("text-center", "text-black", "my-5");
+    header.textContent = recetas
+      ? `${recetas.length} Resultados`
+      : "No se encontraron resultados";
+    resultado.appendChild(header);
+
     recetas.forEach((receta) => {
       const { idMeal, strMeal, strMealThumb } = receta;
 
