@@ -90,7 +90,15 @@ function iniciarApp() {
   }
 
   function seleccionarReceta(id) {
-    console.log(id);
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((result) => mostrarRecetaModal(result.meals[0]));
+  }
+
+  function mostrarRecetaModal(receta) {
+    console.log(receta);
   }
 
   function limpiarHTML(selector) {
