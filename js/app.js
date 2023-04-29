@@ -71,6 +71,11 @@ function iniciarApp() {
       const recetaCardButton = document.createElement("BUTTON");
       recetaCardButton.classList.add("btn", "btn-danger", "w-100");
       recetaCardButton.textContent = "Ver receta";
+      recetaCardButton.dataset.bsTarget = "#modal";
+      recetaCardButton.dataset.bsToggle = "modal";
+      recetaCardButton.onclick = function () {
+        seleccionarReceta(idMeal);
+      };
 
       // inyectar en el codigo HTML
       recetaCardBody.appendChild(recetaCardHeading);
@@ -82,6 +87,10 @@ function iniciarApp() {
       recetaContenedor.appendChild(recetaCard);
       resultado.appendChild(recetaContenedor);
     });
+  }
+
+  function seleccionarReceta(id) {
+    console.log(id);
   }
 
   function limpiarHTML(selector) {
