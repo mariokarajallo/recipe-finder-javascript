@@ -138,10 +138,19 @@ function iniciarApp() {
     const modalFooter = document.querySelector(".modal-footer");
     limpiarHTML(modalFooter);
 
-    //creamos el botono para guardar la receta a favoritos
+    //creamos el boton para guardar la receta a favoritos
     const btnGuardar = document.createElement("BUTTON");
     btnGuardar.classList.add("btn", "btn-danger", "col");
     btnGuardar.textContent = "Guardar Favorito";
+
+    // accion del boton guardar a locaStorage
+    btnGuardar.onclick = function () {
+      guardarLocalStorage({
+        id: idMeal,
+        title: strMeal,
+        img: strMealThumb,
+      });
+    };
 
     // creamos el boton para cerrar el modal
     const btnCerar = document.createElement("BUTTON");
@@ -158,6 +167,14 @@ function iniciarApp() {
 
     // muestra el modal
     modal.show();
+  }
+
+  function guardarLocalStorage(receta) {
+    console.log(receta);
+
+    const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
+    const favoritosJSON = JSON.stringify([...favoritos, receta]);
+    localStorage.setItem("favoritos", favoritosJSON);
   }
 
   function limpiarHTML(selector) {
