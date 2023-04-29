@@ -1,6 +1,7 @@
 function iniciarApp() {
   const selecCategorias = document.querySelector("#categorias");
   const resultado = document.querySelector("#resultado");
+  const modal = new bootstrap.Modal("#modal", {});
 
   selecCategorias.addEventListener("change", seleccionarCategoria);
 
@@ -71,8 +72,9 @@ function iniciarApp() {
       const recetaCardButton = document.createElement("BUTTON");
       recetaCardButton.classList.add("btn", "btn-danger", "w-100");
       recetaCardButton.textContent = "Ver receta";
-      recetaCardButton.dataset.bsTarget = "#modal";
-      recetaCardButton.dataset.bsToggle = "modal";
+      //agregar manualmente el modal sin la instancia de booostrap.Modal
+      // recetaCardButton.dataset.bsTarget = "#modal";
+      // recetaCardButton.dataset.bsToggle = "modal";
       recetaCardButton.onclick = function () {
         seleccionarReceta(idMeal);
       };
@@ -99,6 +101,21 @@ function iniciarApp() {
 
   function mostrarRecetaModal(receta) {
     console.log(receta);
+    const { idMeal, strInstructions, strMeal, strMealThumb } = receta;
+
+    // anadir contenido al modal
+    const modalTitle = document.querySelector(".modal-title");
+    modalTitle.textContent = strMeal;
+
+    const modalBody = document.querySelector(".modal-body");
+    modalBody.innerHTML = `
+      <img src="${strMealThumb}" alt="Receta ${strMeal}" class="img-fluid">    </img>
+      <h3 class="my-3">Instruccions</h3>
+      <p>${strInstructions}</p>
+    `;
+
+    // muestra el modal
+    modal.show();
   }
 
   function limpiarHTML(selector) {
