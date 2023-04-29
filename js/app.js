@@ -133,6 +133,29 @@ function iniciarApp() {
 
     modalBody.appendChild(listGroup);
 
+    // Boton guardar y cerrar
+
+    const modalFooter = document.querySelector(".modal-footer");
+    limpiarHTML(modalFooter);
+
+    //creamos el botono para guardar la receta a favoritos
+    const btnGuardar = document.createElement("BUTTON");
+    btnGuardar.classList.add("btn", "btn-danger", "col");
+    btnGuardar.textContent = "Guardar Favorito";
+
+    // creamos el boton para cerrar el modal
+    const btnCerar = document.createElement("BUTTON");
+    btnCerar.classList.add("btn", "btn-secondary", "col");
+    btnCerar.textContent = "Cerrar";
+    btnCerar.onclick = function () {
+      modal.hide();
+      console.log(modal);
+    };
+
+    // inyectamos en el HTML
+    modalFooter.appendChild(btnGuardar);
+    modalFooter.appendChild(btnCerar);
+
     // muestra el modal
     modal.show();
   }
