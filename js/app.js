@@ -145,6 +145,10 @@ function iniciarApp() {
 
     // accion del boton guardar a locaStorage
     btnGuardar.onclick = function () {
+      if (existeLocalStorage(idMeal)) {
+        return;
+      }
+
       guardarLocalStorage({
         id: idMeal,
         title: strMeal,
@@ -170,11 +174,14 @@ function iniciarApp() {
   }
 
   function guardarLocalStorage(receta) {
-    console.log(receta);
-
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
     const favoritosJSON = JSON.stringify([...favoritos, receta]);
     localStorage.setItem("favoritos", favoritosJSON);
+  }
+
+  function existeLocalStorage(id) {
+    const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
+    return favoritos.some((favoritos) => favoritos.id === id);
   }
 
   function limpiarHTML(selector) {
