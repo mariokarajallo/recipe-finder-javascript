@@ -3,9 +3,15 @@ function iniciarApp() {
   const resultado = document.querySelector("#resultado");
   const modal = new bootstrap.Modal("#modal", {});
 
-  selecCategorias.addEventListener("change", seleccionarCategoria);
+  if (selecCategorias) {
+    selecCategorias.addEventListener("change", seleccionarCategoria);
+    obtenerCategorias();
+  }
 
-  obtenerCategorias();
+  const favoritosDiv = document.querySelector(".favoritos");
+  if (favoritosDiv) {
+    obtenerFavoritos();
+  }
 
   function obtenerCategorias() {
     const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
@@ -13,6 +19,22 @@ function iniciarApp() {
     fetch(url)
       .then((respuesta) => respuesta.json())
       .then((resultado) => mostrarCategorias(resultado.categories));
+  }
+
+  function obtenerFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
+
+    // si existe algun favoritos, vamos a pasarlos la funcion mostrarRecetas
+    if (favoritos.length) {
+      mostrarRecetas(favoritos);
+      return;
+    }
+
+    // si no existe algun favorito
+    const noFavoritos = document.createElement("P");
+    noFavoritos.classList.add("fs-4", "text-center", "font-bold", "mt-5");
+    noFavoritos.textContent = "No hay favoritos guardados";
+    favoritosDiv.appendChild(noFavoritos);
   }
 
   function mostrarCategorias(categories = []) {
@@ -60,14 +82,14 @@ function iniciarApp() {
       const recetaCardImagen = document.createElement("IMG");
       recetaCardImagen.classList.add("card-img-top");
       recetaCardImagen.alt = `Imagen de la receta ${strMeal}`;
-      recetaCardImagen.src = strMealThumb;
+      recetaCardImagen.src = strMealThumb ?? receta.img;
 
       const recetaCardBody = document.createElement("DIV");
       recetaCardBody.classList.add("card-body");
 
       const recetaCardHeading = document.createElement("H3");
       recetaCardHeading.classList.add("card-title", "mb-3");
-      recetaCardHeading.textContent = strMeal;
+      recetaCardHeading.textContent = strMeal ?? receta.title;
 
       const recetaCardButton = document.createElement("BUTTON");
       recetaCardButton.classList.add("btn", "btn-danger", "w-100");
@@ -76,7 +98,7 @@ function iniciarApp() {
       // recetaCardButton.dataset.bsTarget = "#modal";
       // recetaCardButton.dataset.bsToggle = "modal";
       recetaCardButton.onclick = function () {
-        seleccionarReceta(idMeal);
+        seleccionarReceta(idMeal ?? receta.id);
       };
 
       // inyectar en el codigo HTML
