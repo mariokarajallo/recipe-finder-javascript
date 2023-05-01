@@ -141,11 +141,15 @@ function iniciarApp() {
     //creamos el boton para guardar la receta a favoritos
     const btnGuardar = document.createElement("BUTTON");
     btnGuardar.classList.add("btn", "btn-danger", "col");
-    btnGuardar.textContent = "Guardar Favorito";
+    btnGuardar.textContent = existeLocalStorage(idMeal)
+      ? "Eliminar Favorito"
+      : "Guardar Favorito";
 
     // accion del boton guardar a locaStorage
     btnGuardar.onclick = function () {
       if (existeLocalStorage(idMeal)) {
+        eliminarFavorito(idMeal);
+        btnGuardar.textContent = "Guardar Favorito";
         return;
       }
 
@@ -154,6 +158,7 @@ function iniciarApp() {
         title: strMeal,
         img: strMealThumb,
       });
+      btnGuardar.textContent = "Eliminar Favorito";
     };
 
     // creamos el boton para cerrar el modal
@@ -177,6 +182,14 @@ function iniciarApp() {
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
     const favoritosJSON = JSON.stringify([...favoritos, receta]);
     localStorage.setItem("favoritos", favoritosJSON);
+  }
+
+  function eliminarFavorito(id) {
+    const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
+    const nuevosfavoritos = favoritos.filter(
+      (favoritos) => favoritos.id !== id
+    );
+    localStorage.setItem("favoritos", JSON.stringify(nuevosfavoritos));
   }
 
   function existeLocalStorage(id) {
