@@ -150,6 +150,7 @@ function iniciarApp() {
       if (existeLocalStorage(idMeal)) {
         eliminarFavorito(idMeal);
         btnGuardar.textContent = "Guardar Favorito";
+        mostrarToast(`Receta ${strMeal} eliminado correctamente`, "delete");
         return;
       }
 
@@ -159,6 +160,7 @@ function iniciarApp() {
         img: strMealThumb,
       });
       btnGuardar.textContent = "Eliminar Favorito";
+      mostrarToast(`Receta ${strMeal} guardado correctamente`, "save");
     };
 
     // creamos el boton para cerrar el modal
@@ -197,6 +199,26 @@ function iniciarApp() {
     return favoritos.some((favoritos) => favoritos.id === id);
   }
 
+  function mostrarToast(mensaje, type) {
+    // seleccionamos elementos del DOM
+    const toastDiv = document.querySelector("#toast");
+    const toastHeader = document.querySelector(".toast-header");
+    const toastBody = document.querySelector(".toast-body");
+    toastBody.textContent = mensaje;
+
+    // actualizamos el contenido segun tipo de mensaje
+    if (type === "save") {
+      toastHeader.classList.add("bg-success", "text-white");
+      toastHeader.classList.remove("bg-danger");
+    } else if (type === "delete") {
+      toastHeader.classList.add("bg-danger", "text-white");
+      toastHeader.classList.remove("bg-successs");
+    }
+
+    // instanciamos el componente toast de boostrap y mostramos con el metodo show() en el html
+    const toast = new bootstrap.Toast(toastDiv);
+    toast.show();
+  }
   function limpiarHTML(selector) {
     while (selector.firstChild) {
       selector.removeChild(selector.firstChild);
